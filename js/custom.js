@@ -7,11 +7,11 @@ jQuery(document).ready(function($){
     this.state = {
 		posts: [],
 		currentPage: 1,
-		postsPerPage: 5
+		postsPerPage: 2
     };
 	this.handleClick = this.handleClick.bind(this);
   }
-  
+
   componentDidMount() {
 
     $.ajax({
@@ -27,13 +27,14 @@ jQuery(document).ready(function($){
       }.bind(this)
     });	
   }
-
-	  handleClick(event) {
+	
+	handleClick(event) {
 		this.setState({
-		  currentPage: Number(event.target.id)
+		  currentPage: Number(event.currentTarget.id) //using event.target would reference to child tag (a). So use event.currentTarget 
 		});
-		console.log('CLICKED: ' + Number(event.target.id));
-	  }  
+
+		//this.setState({active: !this.state.active});
+	}  
 	  
 	render() {
 		
@@ -59,13 +60,13 @@ jQuery(document).ready(function($){
 
         const renderPageNumbers = pageNumbers.map(number => {
           return React.createElement(
-            'li', {	className:'page-item',
+            'li', {	className: 'page-item' + (currentPage === number ? ' active' : '') ,
 					key:number,
+					id: number,
 					onClick: this.handleClick
 				},
-			React.createElement('a', {	className:'page-link',
-										href: '#',
-										id: number
+			React.createElement('a', {	className: 'page-link',
+										href: '#'
 									}, number
 			)
           );
