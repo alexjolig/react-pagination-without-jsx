@@ -10,6 +10,7 @@ jQuery(document).ready(function($){
 		postsPerPage: 2
     };
 	this.handleClick = this.handleClick.bind(this);
+	this.changePage = this.changePage.bind(this);
   }
 
   componentDidMount() {
@@ -31,10 +32,25 @@ jQuery(document).ready(function($){
 	handleClick(event) {
 		this.setState({
 		  currentPage: Number(event.currentTarget.id) //using event.target would reference to child tag (a). So use event.currentTarget 
-		});
+		});	
+	}
 
-		//this.setState({active: !this.state.active});
-	}  
+	changePage(event) {
+		let newPage = 1;
+		if(event.currentTarget.id === 'p-page') {
+			newPage = this.state.currentPage > 1 ? this.state.currentPage - 1 : 1;
+			this.setState({
+			  currentPage: newPage
+			});
+		}
+		else {
+			let pageCount = this.state.posts.length / this.state.postsPerPage;			
+			newPage = this.state.currentPage < pageCount ? this.state.currentPage + 1 : pageCount;
+			this.setState({
+			  currentPage: newPage
+			});			
+		}
+	} 
 	  
 	render() {
 		
@@ -58,6 +74,30 @@ jQuery(document).ready(function($){
           pageNumbers.push(i);
         }
 
+		const prevPage = React.createElement(
+            'li', {	className: 'page-item',
+					key:'p-page',
+					id: 'p-page',
+					onClick: this.changePage
+				},
+			React.createElement('a', {	className: 'page-link',
+										href: '#'
+									}, 'Previous'
+			)
+          );
+		  
+		const nextPage = React.createElement(
+            'li', {	className: 'page-item',
+					key:'n-page',
+					id: 'n-page',
+					onClick: this.changePage
+				},
+			React.createElement('a', {	className: 'page-link',
+										href: '#'
+									}, 'Next'
+			)
+          );		  
+		
         const renderPageNumbers = pageNumbers.map(number => {
           return React.createElement(
             'li', {	className: 'page-item' + (currentPage === number ? ' active' : '') ,
@@ -77,7 +117,10 @@ jQuery(document).ready(function($){
 					React.createElement('ul', {key:'a'}, renderPosts)
 				),
 				React.createElement('div', {key: 'b', className: 'row'},
-										React.createElement('ul', {className: 'pagination',key: 'b'}, renderPageNumbers)	
+										React.createElement('ul', {className: 'pagination',key: 'b'}, 
+										prevPage,
+										renderPageNumbers,
+										nextPage)	
 				)					
 			];
 	}
