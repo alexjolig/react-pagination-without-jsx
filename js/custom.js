@@ -1,5 +1,15 @@
 jQuery(document).ready(function($){
 	
+ /*
+	Simple project to implementing pagination with React
+	Developer: Alex Jolig
+	
+	Licence:MIT
+	Source:https://github.com/alexjolig/react-pagination-without-jsx
+	Contact me if you need to: alex.jolig@gmail.com
+	
+ */
+	
  class ImageGallery extends React.Component {
   constructor(props) {
     super(props);
