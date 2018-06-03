@@ -5,14 +5,15 @@ jQuery(document).ready(function($){
     super(props);
 
     this.state = {
-		posts: [],
+		posts: [], //However its not relevant in this sample but I named the array posts. feel free to name it as you wish
 		currentPage: 1,
-		postsPerPage: 2
+		postsPerPage: 5
     };
 	this.handleClick = this.handleClick.bind(this);
 	this.changePage = this.changePage.bind(this);
   }
 
+  //put AJAX request in componentDidMount() method
   componentDidMount() {
 
     $.ajax({
@@ -29,12 +30,14 @@ jQuery(document).ready(function($){
     });	
   }
 	
+	//Handle click on page number list
 	handleClick(event) {
 		this.setState({
 		  currentPage: Number(event.currentTarget.id) //using event.target would reference to child tag (a). So use event.currentTarget 
 		});	
 	}
 
+	//Handle next and previous buttons
 	changePage(event) {
 		let newPage = 1;
 		if(event.currentTarget.id === 'p-page') {
@@ -112,6 +115,7 @@ jQuery(document).ready(function($){
           );
         });	
 		
+		//NOTE: return elements as array is added in react 16+
 		return [
 				React.createElement('div', {key: 'a', className: 'row'},
 					React.createElement('ul', {key:'a'}, renderPosts)
